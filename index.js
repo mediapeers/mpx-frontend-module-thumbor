@@ -106,6 +106,64 @@
     };
   });
 
+  angular.module("mpx-frontend-module-thumbor").directive('thumborWrap', function() {
+    return {
+      restrict: 'A',
+      require: 'thumbor',
+      controllerAs: 'vm',
+      bindings: {
+        thumborDimensions: '<thumborDimensions',
+        thumborMethod: '<thumborMethod'
+      },
+      controller: ["$element", function($element) {
+        var onReady, vm;
+        vm = this;
+        onReady = function() {
+          var height, ref, url, width;
+          ref = vm.parseDimensions(vm.thumborDimensions), width = ref[0], height = ref[1];
+          url = vm.generateUrl(width, height, vm.thumborMethod);
+          vm._thumborProperties = {
+            backgroundImage: 'url(#{url})',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center'
+          };
+          return $element.removeAttr('url signing-key distribution-url');
+        };
+        return vm.registerListener(onReady);
+      }]
+    };
+  });
+
+  angular.module("mpx-frontend-module-thumbor").directive('thumborBackground', function() {
+    return {
+      restrict: 'A',
+      require: 'thumbor',
+      link: function(scope, element, attrs, ctrl) {
+        var onReady;
+        onReady = function() {
+          var height, ref, url, width;
+          ref = ctrl.parseDimensions(attrs.thumborDimensions), width = ref[0], height = ref[1];
+          url = ctrl.generateUrl(width, height, attrs.thumborMethod);
+          element.css({
+            'background-image': "url(" + url + ")"
+          });
+          element.css({
+            'background-size': "contain"
+          });
+          element.css({
+            'background-repeat': "no-repeat"
+          });
+          element.css({
+            'background-position': "center center"
+          });
+          return element.removeAttr('url signing-key distribution-url');
+        };
+        return ctrl.registerListener(onReady);
+      }
+    };
+  });
+
   angular.module("mpx-frontend-module-thumbor").directive('thumborTooltip', function() {
     return {
       restrict: 'A',
