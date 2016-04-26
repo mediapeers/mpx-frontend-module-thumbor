@@ -71,46 +71,6 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumborBackground', ->
 
     ctrl.registerListener(onReady)
 
-angular.module("mpx-frontend-module-thumbor").directive 'thumborWrap', ->
-  restrict: 'A'
-  require: 'thumbor'
-  controllerAs: 'vm'
-  bindings:
-    thumborDimensions: '<thumborDimensions'
-    thumborMethod: '<thumborMethod'
-  controller: ($element) ->
-    # JASON LOOK HERE
-    vm = this
-    onReady = ->
-      [width, height] = vm.parseDimensions(vm.thumborDimensions)
-      url             = vm.generateUrl(width, height, vm.thumborMethod)
-
-      vm._thumborProperties =
-        backgroundImage: 'url(#{url})'
-        backgroundSize: 'contain'
-        backgroundRepeat: 'no-repeat'
-        backgroundPosition: 'center center'
-
-      $element.removeAttr('url signing-key distribution-url')
-
-    vm.registerListener(onReady)
-
-angular.module("mpx-frontend-module-thumbor").directive 'thumborBackground', ->
-  restrict: 'A'
-  require: 'thumbor'
-  link: (scope, element, attrs, ctrl) ->
-    onReady = ->
-      [width, height] = ctrl.parseDimensions(attrs.thumborDimensions)
-      url             = ctrl.generateUrl(width, height, attrs.thumborMethod)
-
-      element.css('background-image': "url(#{url})")
-      element.css('background-size': "contain")
-      element.css('background-repeat': "no-repeat")
-      element.css('background-position': "center center")
-      element.removeAttr('url signing-key distribution-url')
-
-    ctrl.registerListener(onReady)
-
 angular.module("mpx-frontend-module-thumbor").directive 'thumborTooltip', ->
   restrict: 'A'
   require: 'thumbor'
