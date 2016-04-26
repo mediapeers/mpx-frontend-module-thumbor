@@ -71,29 +71,28 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumborBackground', ->
 
     ctrl.registerListener(onReady)
 
-angular.module("mpx-frontend-module-thumbor").directive 'thumborWrap', ->
-  restrict: 'A'
-  require: 'thumbor'
-  controllerAs: 'vm'
-  bindings:
-    thumborDimensions: '<thumborDimensions'
-    thumborMethod: '<thumborMethod'
-  controller: ($element) ->
-    # JASON LOOK HERE
-    vm = this
-    onReady = ->
-      [width, height] = vm.parseDimensions(vm.thumborDimensions)
-      url             = vm.generateUrl(width, height, vm.thumborMethod)
+angular.module('mpx-frontend-module-thumbor').directive 'thumborWrapper', ->
+    restrict: 'A'
+    require: 'thumbor'
+    controllerAs: 'thumborWrapper'
+    controller: ($scope) ->
+      vm = this
+      $scope.setSrc = (src) ->
+        vm._src = src
+        return
+      return
+    link: (scope, element, attrs, ctrl) ->
+      onReady = ->
+        ref = ctrl.parseDimensions(attrs.thumborDimensions)
+        width = ref[0]
+        height = ref[1]
+        url = ctrl.generateUrl(width, height, attrs.thumborMethod)
+        scope.setSrc url
+        element.removeAttr 'url signing-key distribution-url'
+        return
 
-      vm._thumborProperties =
-        backgroundImage: 'url(#{url})'
-        backgroundSize: 'contain'
-        backgroundRepeat: 'no-repeat'
-        backgroundPosition: 'center center'
-
-      $element.removeAttr('url signing-key distribution-url')
-
-    vm.registerListener(onReady)
+      ctrl.registerListener onReady
+      return
 
 angular.module("mpx-frontend-module-thumbor").directive 'thumborBackground', ->
   restrict: 'A'
