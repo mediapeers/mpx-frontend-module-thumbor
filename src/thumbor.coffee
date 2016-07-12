@@ -93,19 +93,19 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumborTooltip', ->
 
 angular.module('mpx-frontend-module-thumbor')
   .directive 'thumborWrapper', ->
-    return:
-      restrict: 'A'
-      require: ['thumbor', 'thumborWrapper']
-      controllerAs: 'thumborWrapper'
-      controller: angular.noop
-      link: (scope, element, attrs, ctrls) ->
-        thumbor = ctrls[0]
-        vm = ctrls[1]
-        onReady = ->
-          ref = thumbor.parseDimensions(attrs.thumborDimensions)
-          width = ref[0]
-          height = ref[1]
-          url = thumbor.generateUrl(width, height, attrs.thumborMethod)
-          vm._src = url
-          element.removeAttr('url signing-key distribution-url')
-        thumbor.registerListener(onReady)
+    restrict: 'A'
+    require: ['thumbor', 'thumborWrapper']
+    controllerAs: 'thumborWrapper'
+    controller: angular.noop
+    link: (scope, element, attrs, ctrls) ->
+      console.log('linked')
+      thumbor = ctrls[0]
+      vm = ctrls[1]
+      onReady = ->
+        ref = thumbor.parseDimensions(attrs.thumborDimensions)
+        width = ref[0]
+        height = ref[1]
+        url = thumbor.generateUrl(width, height, attrs.thumborMethod)
+        vm._src = url
+        element.removeAttr('url signing-key distribution-url')
+      thumbor.registerListener(onReady)

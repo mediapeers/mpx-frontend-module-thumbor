@@ -134,26 +134,25 @@
 
   angular.module('mpx-frontend-module-thumbor').directive('thumborWrapper', function() {
     return {
-      "return": {
-        restrict: 'A',
-        require: ['thumbor', 'thumborWrapper'],
-        controllerAs: 'thumborWrapper',
-        controller: angular.noop,
-        link: function(scope, element, attrs, ctrls) {
-          var onReady, thumbor, vm;
-          thumbor = ctrls[0];
-          vm = ctrls[1];
-          onReady = function() {
-            var height, ref, url, width;
-            ref = thumbor.parseDimensions(attrs.thumborDimensions);
-            width = ref[0];
-            height = ref[1];
-            url = thumbor.generateUrl(width, height, attrs.thumborMethod);
-            vm._src = url;
-            return element.removeAttr('url signing-key distribution-url');
-          };
-          return thumbor.registerListener(onReady);
-        }
+      restrict: 'A',
+      require: ['thumbor', 'thumborWrapper'],
+      controllerAs: 'thumborWrapper',
+      controller: angular.noop,
+      link: function(scope, element, attrs, ctrls) {
+        var onReady, thumbor, vm;
+        console.log('linked');
+        thumbor = ctrls[0];
+        vm = ctrls[1];
+        onReady = function() {
+          var height, ref, url, width;
+          ref = thumbor.parseDimensions(attrs.thumborDimensions);
+          width = ref[0];
+          height = ref[1];
+          url = thumbor.generateUrl(width, height, attrs.thumborMethod);
+          vm._src = url;
+          return element.removeAttr('url signing-key distribution-url');
+        };
+        return thumbor.registerListener(onReady);
       }
     };
   });
