@@ -140,7 +140,6 @@
       controller: angular.noop,
       link: function(scope, element, attrs, ctrls) {
         var onReady, thumbor, vm;
-        console.log('linked');
         thumbor = ctrls[0];
         vm = ctrls[1];
         onReady = function() {
