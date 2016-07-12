@@ -66,8 +66,8 @@
       link: function(scope, element, attrs, ctrl) {
         var onReady;
         onReady = function() {
-          var height, ref, url, width;
-          ref = ctrl.parseDimensions(attrs.thumborDimensions), width = ref[0], height = ref[1];
+          var height, ref1, url, width;
+          ref1 = ctrl.parseDimensions(attrs.thumborDimensions), width = ref1[0], height = ref1[1];
           url = ctrl.generateUrl(width, height, attrs.thumborMethod);
           element.attr('src', url);
           return element.removeAttr('url signing-key distribution-url');
@@ -84,8 +84,8 @@
       link: function(scope, element, attrs, ctrl) {
         var onReady;
         onReady = function() {
-          var height, ref, url, width;
-          ref = ctrl.parseDimensions(attrs.thumborDimensions), width = ref[0], height = ref[1];
+          var height, ref1, url, width;
+          ref1 = ctrl.parseDimensions(attrs.thumborDimensions), width = ref1[0], height = ref1[1];
           url = ctrl.generateUrl(width, height, attrs.thumborMethod);
           element.css({
             'background-image': "url(" + url + ")"
@@ -113,8 +113,8 @@
       link: function(scope, element, attrs, ctrl) {
         var onReady;
         onReady = function() {
-          var height, preload, ref, url, width;
-          ref = ctrl.parseDimensions(attrs.thumborTooltipDimensions), width = ref[0], height = ref[1];
+          var height, preload, ref1, url, width;
+          ref1 = ctrl.parseDimensions(attrs.thumborTooltipDimensions), width = ref1[0], height = ref1[1];
           url = ctrl.generateUrl(width, height, attrs.thumborTooltipMethod);
           preload = new Image();
           preload.onload = function() {
@@ -128,6 +128,32 @@
           return preload.src = url;
         };
         return ctrl.registerListener(onReady);
+      }
+    };
+  });
+
+  angular.module('mpx-frontend-module-thumbor').directive('thumborWrapper', function() {
+    return {
+      "return": {
+        restrict: 'A',
+        require: ['thumbor', 'thumborWrapper'],
+        controllerAs: 'thumborWrapper',
+        controller: angular.noop,
+        link: function(scope, element, attrs, ctrls) {
+          var onReady, thumbor, vm;
+          thumbor = ctrls[0];
+          vm = ctrls[1];
+          onReady = function() {
+            var height, ref, url, width;
+            ref = thumbor.parseDimensions(attrs.thumborDimensions);
+            width = ref[0];
+            height = ref[1];
+            url = thumbor.generateUrl(width, height, attrs.thumborMethod);
+            vm._src = url;
+            return element.removeAttr('url signing-key distribution-url');
+          };
+          return thumbor.registerListener(onReady);
+        }
       }
     };
   });
