@@ -98,7 +98,6 @@ angular.module('mpx-frontend-module-thumbor')
     controllerAs: 'thumborWrapper'
     controller: angular.noop
     link: (scope, element, attrs, ctrls) ->
-      console.log('linked')
       thumbor = ctrls[0]
       vm = ctrls[1]
       onReady = ->
