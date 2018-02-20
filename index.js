@@ -44,9 +44,6 @@
             height || (height = '0');
             method = method && (method + "/") || '';
             call = "" + method + width + "x" + height + "/" + this.originalUrl;
-            // Thumbors URL loder has issues with ? in URLs, see https://github.com/thumbor/thumbor/issues/331
-            // hence the url encoding here:
-            call.replace('?', '%3F')
             token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, this.signingKey));
             token = token.replace(/\+/g, '-');
             token = token.replace(/\//g, '_');
