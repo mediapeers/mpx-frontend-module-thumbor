@@ -29,7 +29,12 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumbor', ->
       method  = method && "#{method}/" || ''
 
       call  = "#{method}#{width}x#{height}/#{@originalUrl}"
-      token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, @signingKey))
+
+      try
+        token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, @signingKey))
+      catch
+        console.log('thumbor: failed to create token', call, @signingKey)
+        return null
 
       # make it urlsafe as python's 'urlsafe_b64encode' does it: https://docs.python.org/2/library/base64.html
       token = token.replace(/\+/g, '-')
@@ -62,6 +67,7 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumborBackground', ->
     onReady = ->
       [width, height] = ctrl.parseDimensions(attrs.thumborDimensions)
       url             = ctrl.generateUrl(width, height, attrs.thumborMethod)
+      return unless url
 
       element.css('background-image': "url(#{url})")
       element.css('background-size': "contain")

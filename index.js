@@ -44,7 +44,12 @@
             height || (height = '0');
             method = method && (method + "/") || '';
             call = "" + method + width + "x" + height + "/" + this.originalUrl;
-            token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, this.signingKey));
+            try {
+              token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, this.signingKey));
+            } catch (error) {
+              console.log('thumbor: failed to create token', call, this.signingKey);
+              return null;
+            }
             token = token.replace(/\+/g, '-');
             token = token.replace(/\//g, '_');
             return this.distributionUrl + "/" + token + "/" + call;
@@ -87,6 +92,9 @@
           var height, ref1, url, width;
           ref1 = ctrl.parseDimensions(attrs.thumborDimensions), width = ref1[0], height = ref1[1];
           url = ctrl.generateUrl(width, height, attrs.thumborMethod);
+          if (!url) {
+            return;
+          }
           element.css({
             'background-image': "url(" + url + ")"
           });
