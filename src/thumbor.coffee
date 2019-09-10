@@ -29,13 +29,8 @@ angular.module("mpx-frontend-module-thumbor").directive 'thumbor', ->
       method  = method && "#{method}/" || ''
 
       call  = "#{method}#{width}x#{height}/#{@originalUrl}"
-      token = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(call, @signingKey))
 
-      # make it urlsafe as python's 'urlsafe_b64encode' does it: https://docs.python.org/2/library/base64.html
-      token = token.replace(/\+/g, '-')
-      token = token.replace(/\//g, '_')
-
-      "#{@distributionUrl}/#{token}/#{call}"
+      "#{@distributionUrl}/#{call}"
 
   link: (scope, element, attrs, ctrl) ->
     ctrl.init(attrs)
